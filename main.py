@@ -1,11 +1,5 @@
-from sch.config import Config
-from sch.image_api import Lsky
-from sch.mysql import MySQL
-from sch.mysql.model import SteamUser
+from sch.util.base64 import base64_encode, base64_decode
 
 if __name__ == '__main__':
-    config = Config()
-    config.load_json()
-    mysql = MySQL(config)
-    for row in mysql.fetchall(SteamUser.select()):
-        print(row)
+    text = base64_encode('hello world')
+    print(text)

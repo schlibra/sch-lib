@@ -26,4 +26,5 @@ led = "sch.led_control.led:main"
 [dependency-groups]
 dev = [
     "boto3-stubs[full]>=1.40.10",
+    "pdoc>=15.0.4",
 ]
