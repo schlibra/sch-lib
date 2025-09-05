@@ -1,0 +1,11 @@
+.idea/
+.venv/
+**/*.egg-info/
+**/dist/
+output/
+config/
+log/
+.env
+env.json
+uv.lock
+*data.json

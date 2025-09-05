@@ -1,0 +1,55 @@
+import os
+from typing import Union
+
+from dotenv import load_dotenv
+import boto3
+from boto3.resources.base import ServiceResource
+
+from sch.logger import Logger
+
+
+class S3:
+    client: ServiceResource
+    bucket: None
+    logger: Logger
+    def __init__(self, config):
+        self.logger = Logger('S3')
+        self.logger.info('Initializing S3 client')
+        self.client = boto3.resource(
+            's3',
+            endpoint_url=config.get('s3.endpoint'),
+            aws_access_key_id=config.get('s3.access_key'),
+            aws_secret_access_key=config.get('s3.secret_key')
+        )
+
+    def list_buckets(self):
+        self.logger.info('Listing S3 buckets')
+        return self.client.buckets.all()
+
+    def set_bucket(self, bucket_name: str):
+        self.logger.info(f'Setting S3 bucket to {bucket_name}')
+        self.bucket = self.client.Bucket(bucket_name)
+
+    def read_file(self, key: str):
+        try:
+            self.logger.info(f'Reading file {key} from S3')
+            _object = self.bucket.Object(key)
+            _data = _object.get()['Body'].read().decode('utf-8')
+            return _data
+        except Exception as e:
+            self.logger.error(f'Error reading file {key}: {e}')
+            return False
+
+    def write_file(self, key: str, data: Union[str, bytes]):
+        self.logger.info(f'Writing file {key} to S3')
+        print(f'Writing {key}...')
+        _object = self.bucket.Object(key)
+        _object.put(Body=data)
+        self.logger.info(f'File {key} written to S3')
+        print('Write complete')
+
+    def delete_file(self, key: str):
+        self.logger.info(f'Deleting file {key} from S3')
+        _object = self.bucket.Object(key)
+        _object.delete()
+
