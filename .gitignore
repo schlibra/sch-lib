@@ -3,7 +3,7 @@
 **/*.egg-info/
 **/dist/
 output/
-config/
+/config/
 log/
 .env
 env.json
