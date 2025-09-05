@@ -1,6 +1,6 @@
 [project]
 name = "sch-lib"
-version = "0.1.18"
+version = "1.0.0"
 requires-python = ">=3.9"
 dependencies = [
     "boto3>=1.40.10",
