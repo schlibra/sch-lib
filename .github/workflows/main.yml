@@ -1,0 +1,81 @@
+name: Main
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ 3.9 ]
+        node-version: [ 20 ]
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Dependencies
+        run: |
+          python -m pip install build
+          python -m pip install uv
+          uv sync
+      - name: Echo Version
+        id: version
+        run: |
+          echo version=`uv version --short` >> $GITHUB_OUTPUT
+      - name: Build Package
+        run: |
+          python -m build
+      - name: Upload Artifact(tar.gz)
+        uses: actions/upload-artifact@v4
+        with:
+          name: sch_lib-${{ steps.version.outputs.version }}.tar.gz
+          path: dist/sch_lib-${{ steps.version.outputs.version }}.tar.gz
+      - name: Upload Artifact(whl)
+        uses: actions/upload-artifact@v4
+        with:
+          name: sch_lib-${{ steps.version.outputs.version }}-py3-none-any.whl
+          path: dist/sch_lib-${{ steps.version.outputs.version }}-py3-none-any.whl
+      - name: Setup NodeJS
+        uses: actions/setup-node@v5
+        with:
+          node-version: 20
+          cache: 'npm'
+      - name: Install Dependencies
+        run: |
+          npm install
+      - name: Build Package
+        run: |
+          npm run docs:build
+      - name: Compress docs
+        uses: somaz94/compress-decompress@v1
+        with:
+          command: compress
+          source: docs/.vitepress/dist
+          format: zip
+          dest: dist
+          destfilename: sch_lib-docs-${{ steps.version.outputs.version }}
+      - name: Upload Artifact(docs)
+        uses: actions/upload-artifact@v4
+        with:
+          name: sch_lib-docs-${{ steps.version.outputs.version }}.zip
+          path: dist/sch_lib-docs-${{ steps.version.outputs.version }}.zip
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          token: ${{ github.token }}
+          tag: v${{ steps.version.outputs.version }}
+          name: v${{ steps.version.outputs.version }}
+          artifacts: "dist/sch_lib-${{ steps.version.outputs.version }}.tar.gz,dist/sch_lib-${{ steps.version.outputs.version }}-py3-none-any.whl,dist/sch_lib-docs-${{ steps.version.outputs.version }}.zip"
