@@ -1,5 +1,5 @@
 from typing import TypeVar, Tuple, Any, Sequence
-from sqlalchemy import create_engine, Table, Executable, Engine, Connection, Row
+from sqlalchemy import create_engine, Table, Executable, Engine, Connection, Row, text
 from sch.logger import Logger
 
 class MySQL:
@@ -28,24 +28,37 @@ class MySQL:
         self.logger.info(f"Creating table {table.name}...")
         table.create(self.engine)
 
-    def fetchall(self, statement: Executable) -> Sequence[Row[_TP]]:
+    def fetchall(self, statement: Executable|str) -> Sequence[Row[_TP]]:
+        if isinstance(statement, str):
+            statement = text(statement)
         self.logger.info(f"Executing statement {statement}...")
         return self.connection.execute(statement).fetchall()
 
-    def fetchone(self, statement: Executable) -> Row[_TP]:
+    def fetchone(self, statement: Executable|str) -> Row[_TP]:
+        if isinstance(statement, str):
+            statement = text(statement)
         self.logger.info(f"Executing statement {statement}...")
         return self.connection.execute(statement).fetchone()
 
-    def update(self, statement: Executable, commit=True):
+    def update(self, statement: Executable|str, commit=True):
+        if isinstance(statement, str):
+            statement = text(statement)
         self.logger.info(f"Executing statement {statement}...")
         self.connection.execute(statement)
         if commit:
             self.connection.commit()
 
-    def execute(self, statement: Executable, commit=True):
+    def execute(self, statement: Executable|str, commit=True):
+        if isinstance(statement, str):
+            statement = text(statement)
         self.logger.info(f"Executing statement {statement}...")
         self.update(statement, commit)
 
     def commit(self):
         self.logger.info("Committing...")
         self.connection.commit()
+
+    def get_version(self) -> str:
+        self.logger.info("Getting MySQL version...")
+        result = self.fetchone("SELECT VERSION()")
+        return result[0]

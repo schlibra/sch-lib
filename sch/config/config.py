@@ -19,36 +19,48 @@ class Config:
         初始化日志对象
         """
         self.logger = Logger('Config')
-    def load_json(self, file_path='config/config.json'):
+    @staticmethod
+    def load_json(file_path='config/config.json'):
         """
         加载JSON配置文件
         :param file_path: JSON配置文件路径
         """
+        self = Config()
         self.logger.info(f'Loading config from {file_path}')
         self.config = json.load(open(file_path, 'r', encoding='utf-8'))
-    def load_yaml(self, file_path='config/config.yaml'):
+        return self
+    @staticmethod
+    def load_yaml(file_path='config/config.yaml'):
         """
         加载YAML配置文件
         :param file_path: YAML配置文件路径
         """
+        self = Config()
         self.logger.info(f'Loading YAML config file: {file_path}')
         self.config = yaml.load(open(file_path, 'r', encoding='utf-8'), Loader=yaml.FullLoader)
-    def load_toml(self, file_path='config/config.toml'):
+        return self
+    @staticmethod
+    def load_toml(file_path='config/config.toml'):
         """
         加载TOML配置文件
         :param file_path: TOML配置文件路径
         """
+        self = Config()
         self.logger.info(f'Loading TOML config file: {file_path}')
         self.config = toml.load(open(file_path, 'r', encoding='utf-8'))
-    def load_ini(self, file_path='config/config.ini'):
+        return self
+    @staticmethod
+    def load_ini(file_path='config/config.ini'):
         """
         加载INI配置文件
         :param file_path: INI配置文件路径
         """
+        self = Config()
         self.logger.info(f'Loading INI config file: {file_path}')
         config = configparser.ConfigParser()
         config.read(file_path)
         self.config = {s: dict(config.items(s)) for s in config.sections()}
+        return self
     def get(self, key):
         """
         获取配置值

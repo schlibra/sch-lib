@@ -1,6 +1,6 @@
 [project]
 name = "sch-lib"
-version = "1.0.0"
+version = "1.0.1"
 requires-python = ">=3.9"
 dependencies = [
     "boto3>=1.40.10",
@@ -17,7 +17,17 @@ dependencies = [
 ]
 
 [tool.setuptools]
-packages = ["sch"]
+packages = [
+    "sch.avatar",
+    "sch.config",
+    "sch.image_api",
+    "sch.interval",
+    "sch.led_control",
+    "sch.logger",
+    "sch.mysql",
+    "sch.openlist",
+    "sch.util"
+]
 
 [project.scripts]
 run-interval = "sch.interval.run_interval:main"
@@ -27,4 +37,5 @@ led = "sch.led_control.led:main"
 dev = [
     "boto3-stubs[full]>=1.40.10",
     "pdoc>=15.0.4",
+    "pip>=25.2",
 ]

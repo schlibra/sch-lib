@@ -1,5 +1,7 @@
-from sch.util.base64 import base64_encode, base64_decode
+from sch import Config, MySQL
 
 if __name__ == '__main__':
-    text = base64_encode('hello world')
-    print(text)
+    config = Config.load_json()
+    mysql = MySQL(config)
+    version = mysql.get_version()
+    print(version)

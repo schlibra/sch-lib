@@ -10,3 +10,5 @@ log/
 env.json
 uv.lock
 *data.json
+cache/
+node_modules/

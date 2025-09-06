@@ -10,24 +10,33 @@ class ConfigConverter:
     logger: Logger
     def __init__(self):
         self.logger = Logger('ConfigConverter')
-    def load_json(self, file_path='config/config.json'):
+    @staticmethod
+    def load_json(file_path='config/config.json'):
+        self = ConfigConverter()
         self.logger.info(f'Loading JSON config file: {file_path}')
         self.data = json.load(open(file_path, 'r', encoding='utf-8'))
+        return self
     def save_json(self, file_path='config/config.json', pretty=True):
         self.logger.info(f'Saving JSON config file: {file_path}')
         if pretty:
             json.dump(self.data, open(file_path, 'w', encoding='utf-8'), indent=4, ensure_ascii=False)
         else:
             json.dump(self.data, open(file_path, 'w', encoding='utf-8'))
-    def load_yaml(self, file_path='config/config.yaml'):
+    @staticmethod
+    def load_yaml(file_path='config/config.yaml'):
+        self = ConfigConverter()
         self.logger.info(f'Loading YAML config file: {file_path}')
         self.data = yaml.load(open(file_path, 'r', encoding='utf-8'), Loader=yaml.FullLoader)
+        return self
     def save_yaml(self, file_path='config/config.yaml'):
         self.logger.info(f'Saving YAML config file: {file_path}')
         yaml.dump(self.data, open(file_path, 'w', encoding='utf-8'), default_flow_style=False, allow_unicode=True)
-    def load_toml(self, file_path='config/config.toml'):
+    @staticmethod
+    def load_toml(file_path='config/config.toml'):
+        self = ConfigConverter()
         self.logger.info(f'Loading TOML config file: {file_path}')
         self.data = toml.load(open(file_path, 'r', encoding='utf-8'))
+        return self
     def save_toml(self, file_path='config/config.toml'):
         self.logger.info(f'Saving TOML config file: {file_path}')
         toml.dump(self.data, open(file_path, 'w', encoding='utf-8'))
@@ -38,7 +47,9 @@ class ConfigConverter:
                 f.write(f'[{section}]\n')
                 for option, value in options.items():
                     f.write(f'{option} = {value}\n')
-    def load_ini(self, file_path='config/config.ini'):
+    @staticmethod
+    def load_ini(file_path='config/config.ini'):
+        self = ConfigConverter()
         self.logger.info(f'Loading INI config file: {file_path}')
         config = {}
         with open(file_path, 'r', encoding='utf-8') as f:
@@ -54,6 +65,7 @@ class ConfigConverter:
                     option, value = line.split('=')
                     config[section][option.strip()] = value.strip()
         self.data = config
+        return self
     def dump_data(self):
         self.logger.info(f'Dumping data:')
         pprint(self.data)
