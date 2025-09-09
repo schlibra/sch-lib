@@ -2,7 +2,7 @@ import {DefaultTheme, defineConfig} from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-    title: "SCH-Lib-文档",
+    title: "SCH-Lib 文档",
     description: "sch lib 文档",
     lang: 'zh-CN',
     lastUpdated: true,
@@ -14,6 +14,17 @@ export default defineConfig({
         nav: [
             {text: '教程', link: '/guide/introduction/', activeMatch: '^/guide/'},
         ],
+        lastUpdated: {
+            text: '上次更新'
+        },
+        editLink: {
+            pattern: 'https://github.com/schlibra/sch-lib/edit/master/docs/:path',
+            text: '在 GitHub 上编辑此页'
+        },
+        docFooter: {
+            prev: '上一篇',
+            next: '下一篇'
+        },
         search: {
             provider: 'local',
             options: {
@@ -57,9 +68,16 @@ export default defineConfig({
                 ]
             },
             {
-                text: 'Base64转换',
+                text: 'MySQL',
                 items: [
-                    {text: 'Base64转换', link: '/guide/base64/'}
+                    {text: 'MySQL', link: '/guide/mysql/'}
+                ]
+            },
+            {
+                text: '实用工具',
+                items: [
+                    {text: 'Base64转换', link: '/guide/utils/base64/'},
+                    {text: '密码隐藏', link: '/guide/utils/password/'}
                 ]
             }
         ],

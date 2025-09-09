@@ -1,19 +1,20 @@
-import os
 from typing import Union
-
-from dotenv import load_dotenv
-import boto3
-from boto3.resources.base import ServiceResource
 
 from sch.logger import Logger
 
 
 class S3:
-    client: ServiceResource
-    bucket: None
+    client = None
+    bucket = None
     logger: Logger
     def __init__(self, config):
         self.logger = Logger('S3')
+        try:
+            import boto3
+            from boto3.resources.base import ServiceResource
+        except (ModuleNotFoundError, ImportError):
+            self.logger.error('sch-lib[s3] is required for S3 support')
+            exit(1)
         self.logger.info('Initializing S3 client')
         self.client = boto3.resource(
             's3',

@@ -32,10 +32,13 @@ features:
     icon: 🖼️
 ---
 ## 使用sch-lib轻松进行开发
+```bash
+pip install sch-lib[mysql]
+```
 ```python
 from sch.config import Config
 from sch.mysql import MySQL
 
-config = config.load_json() # 加载配置 [!code focus]
+config = Config.load_json() # 加载配置 [!code focus]
 mysql = MySQL(config) # 连接数据库 [!code focus]
 ```

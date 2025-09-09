@@ -1,14 +1,18 @@
-from typing import TypeVar, Tuple, Any, Sequence
-from sqlalchemy import create_engine, Table, Executable, Engine, Connection, Row, text
+from typing import TypeVar, Tuple, Any
 from sch.logger import Logger
 
 class MySQL:
     _TP = TypeVar("_TP", bound=Tuple[Any, ...])
-    engine: Engine
-    connection: Connection
+    engine = None
+    connection = None
     logger: Logger
     def __init__(self, config, echo=False):
         self.logger = Logger("MySQL")
+        try:
+            from sqlalchemy import create_engine, Engine, Connection
+        except (ModuleNotFoundError, ImportError):
+            self.logger.error('sch-lib[mysql] is required for MySQL support')
+            exit(1)
         self.logger.info("Initializing MySQL...")
         self.engine = create_engine(
             f"mysql+pymysql://{config.get('mysql.user')}:{config.get('mysql.pass')}@{config.get('mysql.host')}:{config.get('mysql.port')}/{config.get('mysql.name')}?charset=utf8mb4",
@@ -24,35 +28,56 @@ class MySQL:
         self.logger.info(f"Setting echo to {echo}...")
         self.engine.echo = echo
 
-    def create_table(self, table: Table):
-        self.logger.info(f"Creating table {table.name}...")
-        table.create(self.engine)
+    def create_table(self, table):
+        from sqlalchemy import Table
+        if isinstance(table, Table):
+            self.logger.info(f"Creating table {table.name}...")
+            table.create(self.engine)
+        else:
+            raise TypeError("table must be a sqlalchemy.Table object")
 
-    def fetchall(self, statement: Executable|str) -> Sequence[Row[_TP]]:
+    def fetchall(self, statement):
+        from sqlalchemy import Executable, text
+
         if isinstance(statement, str):
             statement = text(statement)
-        self.logger.info(f"Executing statement {statement}...")
-        return self.connection.execute(statement).fetchall()
+        if isinstance(statement, Executable):
+            self.logger.info(f"Executing statement {statement}...")
+            return self.connection.execute(statement).fetchall()
+        else:
+            raise TypeError("statement must be a sqlalchemy.Executable object or a string")
 
-    def fetchone(self, statement: Executable|str) -> Row[_TP]:
+    def fetchone(self, statement):
+        from sqlalchemy import Executable, text
         if isinstance(statement, str):
             statement = text(statement)
-        self.logger.info(f"Executing statement {statement}...")
-        return self.connection.execute(statement).fetchone()
+        if isinstance(statement, Executable):
+            self.logger.info(f"Executing statement {statement}...")
+            return self.connection.execute(statement).fetchone()
+        else:
+            raise TypeError("statement must be a sqlalchemy.Executable object or a string")
 
-    def update(self, statement: Executable|str, commit=True):
+    def update(self, statement, commit=True):
+        from sqlalchemy import Executable, text
         if isinstance(statement, str):
             statement = text(statement)
-        self.logger.info(f"Executing statement {statement}...")
-        self.connection.execute(statement)
-        if commit:
-            self.connection.commit()
+        if isinstance(statement, Executable):
+            self.logger.info(f"Executing statement {statement}...")
+            self.connection.execute(statement)
+            if commit:
+                self.connection.commit()
+        else:
+            raise TypeError("statement must be a sqlalchemy.Executable object or a string")
 
-    def execute(self, statement: Executable|str, commit=True):
+    def execute(self, statement, commit=True):
+        from sqlalchemy import text, Executable
         if isinstance(statement, str):
             statement = text(statement)
-        self.logger.info(f"Executing statement {statement}...")
-        self.update(statement, commit)
+        if isinstance(statement, Executable):
+            self.logger.info(f"Executing statement {statement}...")
+            self.update(statement, commit)
+        else:
+            raise TypeError("statement must be a sqlalchemy.Executable object or a string")
 
     def commit(self):
         self.logger.info("Committing...")

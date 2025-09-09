@@ -2,6 +2,11 @@
 title: 头像生成
 ---
 # 头像生成
+:::tip 该模块依赖[image]
+```bash
+pip install sch-lib[image]
+```
+:::
 生成Github风格哈希头像，通过输入文本的哈希值，可以生成不同的头像。
 ::: tip 方法
 `generate_avatar(code: str=None, algo: Algo=Algo.SHA512, filename: str=None, output_dir: str=None, _return=False)`

@@ -2,7 +2,6 @@ import os
 
 from .enum import Algo
 import uuid
-from PIL import Image, ImageDraw
 from .constants import avatar_algo_functions
 from ..logger import Logger
 
@@ -16,6 +15,11 @@ def generate_avatar(code: str=None, algo: Algo=Algo.SHA512, filename: str=None, 
         output_dir: 输出目录，默认使用output，可自定义
     """
     logger = Logger("AvatarGenerator")
+    try:
+        from PIL import Image, ImageDraw
+    except (ModuleNotFoundError, ImportError):
+        logger.error('sch-lib[image] is required to use this function.')
+        exit(1)
     logger.info(f"Generating avatar for code: {code} with algorithm: {algo.value}")
     if code is None:
         source = uuid.uuid4().hex

@@ -1,23 +1,39 @@
 [project]
 name = "sch-lib"
-version = "1.0.1"
+version = "1.0.2"
 requires-python = ">=3.9"
 dependencies = [
-    "boto3>=1.40.10",
-    "bs4>=0.0.2",
-    "cryptography>=45.0.6",
-    "dotenv>=0.9.9",
-    "pillow>=11.3.0",
-    "pymysql>=1.1.1",
     "pyyaml>=6.0.2",
-    "requests>=2.32.4",
-    "setuptools>=80.9.0",
-    "sqlalchemy>=2.0.43",
     "toml>=0.10.2",
+]
+
+[project.optional-dependencies]
+mysql = [
+    "pymysql>=1.1.1",
+    "sqlalchemy>=2.0.43",
+]
+s3 = [
+    "boto3>=1.40.10",
+]
+image = [
+    "pillow>=11.3.0",
+]
+request = [
+    "bs4>=0.0.2",
+    "requests>=2.32.4",
+]
+all = [
+    "pymysql>=1.1.1",
+    "sqlalchemy>=2.0.43",
+    "boto3>=1.40.10",
+    "pillow>=11.3.0",
+    "bs4>=0.0.2",
+    "requests>=2.32.4",
 ]
 
 [tool.setuptools]
 packages = [
+    "sch",
     "sch.avatar",
     "sch.config",
     "sch.image_api",
@@ -26,7 +42,8 @@ packages = [
     "sch.logger",
     "sch.mysql",
     "sch.openlist",
-    "sch.util"
+    "sch.util",
+    "sch.s3"
 ]
 
 [project.scripts]
@@ -38,4 +55,5 @@ dev = [
     "boto3-stubs[full]>=1.40.10",
     "pdoc>=15.0.4",
     "pip>=25.2",
+    "setuptools>=80.9.0",
 ]
