@@ -3,4 +3,12 @@ from .avatar import generate_avatar
 from .config import Config, ConfigConverter
 from .logger import Logger, LoggerConfig
 from .mysql import MySQL
-from .util import base64_decode, base64_encode, password_hide
+from .util import (
+    base64_decode,
+    base64_encode,
+    password_hide,
+    copy_text,
+    paste_text,
+    html_to_markdown,
+    markdown_to_html,
+)

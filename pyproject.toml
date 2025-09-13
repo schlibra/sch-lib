@@ -1,6 +1,6 @@
 [project]
 name = "sch-lib"
-version = "1.0.2"
+version = "1.0.3"
 requires-python = ">=3.9"
 dependencies = [
     "pyyaml>=6.0.2",
@@ -22,6 +22,13 @@ request = [
     "bs4>=0.0.2",
     "requests>=2.32.4",
 ]
+clip = [
+    "pyperclip>=1.9.0",
+]
+markdown = [
+    "markdown>=3.9",
+    "markdownify>=1.2.0",
+]
 all = [
     "pymysql>=1.1.1",
     "sqlalchemy>=2.0.43",
@@ -29,6 +36,9 @@ all = [
     "pillow>=11.3.0",
     "bs4>=0.0.2",
     "requests>=2.32.4",
+    "pyperclip>=1.9.0",
+    "markdown>=3.9",
+    "markdownify>=1.2.0",
 ]
 
 [tool.setuptools]

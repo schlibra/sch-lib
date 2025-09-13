@@ -77,7 +77,9 @@ export default defineConfig({
                 text: '实用工具',
                 items: [
                     {text: 'Base64转换', link: '/guide/utils/base64/'},
-                    {text: '密码隐藏', link: '/guide/utils/password/'}
+                    {text: '密码隐藏', link: '/guide/utils/password/'},
+                    {text: 'Markdown转换', link: '/guide/utils/markdown/'},
+                    {text: '剪切板操作', link: '/guide/utils/clip/'}
                 ]
             }
         ],

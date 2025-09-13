@@ -57,17 +57,60 @@ class MySQL:
         else:
             raise TypeError("statement must be a sqlalchemy.Executable object or a string")
 
-    def update(self, statement, commit=True):
-        from sqlalchemy import Executable, text
-        if isinstance(statement, str):
-            statement = text(statement)
-        if isinstance(statement, Executable):
+    def select(self, table, *where):
+        from sqlalchemy import Table
+        if isinstance(table, Table):
+            if where:
+                statement = table.select().where(*where)
+                self.logger.info(f"Executing statement {statement}...")
+                return self.connection.execute(statement).fetchall()
+            else:
+                statement = table.select()
+                self.logger.info(f"Executing statement {statement}...")
+                return self.connection.execute(statement).fetchall()
+        else:
+            raise TypeError("table must be a sqlalchemy.Table object")
+
+    def exists(self, table, *where):
+        from sqlalchemy import Table
+        if isinstance(table, Table):
+            result = self.select(table, *where)
+            if len(result):
+                return True
+            else:
+                return False
+        else:
+            raise TypeError("table must be a sqlalchemy.Table object")
+
+
+    def insert(self, table, values: dict, commit=True):
+        from sqlalchemy import Table, insert
+        if isinstance(table, Table):
+            statement = insert(table).values(values)
             self.logger.info(f"Executing statement {statement}...")
             self.connection.execute(statement)
             if commit:
-                self.connection.commit()
+                self.commit()
         else:
-            raise TypeError("statement must be a sqlalchemy.Executable object or a string")
+            raise TypeError("table must be a sqlalchemy.Table object")
+
+    def update(self, table, values: dict, *where, commit=True):
+        from sqlalchemy import Table
+        if isinstance(table, Table):
+            if where:
+                statement = table.update().where(*where).values(values)
+                self.logger.info(f"Executing statement {statement}...")
+                self.connection.execute(statement)
+                if commit:
+                    self.commit()
+            else:
+                statement = table.update().values(values)
+                self.logger.info(f"Executing statement {statement}...")
+                self.connection.execute(statement)
+                if commit:
+                    self.commit()
+        else:
+            raise TypeError("table must be a sqlalchemy.Table object")
 
     def execute(self, statement, commit=True):
         from sqlalchemy import text, Executable
@@ -75,7 +118,9 @@ class MySQL:
             statement = text(statement)
         if isinstance(statement, Executable):
             self.logger.info(f"Executing statement {statement}...")
-            self.update(statement, commit)
+            self.connection.execute(statement)
+            if commit:
+                self.commit()
         else:
             raise TypeError("statement must be a sqlalchemy.Executable object or a string")
 
