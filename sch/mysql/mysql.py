@@ -112,6 +112,25 @@ class MySQL:
         else:
             raise TypeError("table must be a sqlalchemy.Table object")
 
+    def delete(self, table, *where, commit=True):
+        from sqlalchemy import Table
+        if isinstance(table, Table):
+            if where:
+                statement = table.delete().where(*where)
+                self.logger.info(f"Executing statement {statement}...")
+                self.connection.execute(statement)
+                if commit:
+                    self.commit()
+            else:
+                statement = table.delete()
+                self.logger.info(f"Executing statement {statement}...")
+                self.connection.execute(statement)
+                if commit:
+                    self.commit()
+        else:
+            self.logger.error("table must be a sqlalchemy.Table object")
+            exit(1)
+
     def execute(self, statement, commit=True):
         from sqlalchemy import text, Executable
         if isinstance(statement, str):
@@ -132,3 +151,30 @@ class MySQL:
         self.logger.info("Getting MySQL version...")
         result = self.fetchone("SELECT VERSION()")
         return result[0]
+
+    def get_tables(self):
+        self.logger.info("Getting MySQL tables...")
+        result = self.fetchall("SHOW TABLES")
+        return [row[0] for row in result]
+
+    def table_exists(self, table):
+        from sqlalchemy import Table
+        if isinstance(table, Table):
+            table_name = table.name
+        elif isinstance(table, str):
+            table_name = table
+        else:
+            self.logger.error("table must be a sqlalchemy.Table object or a string")
+            exit(1)
+        self.logger.info(f"Checking if table {table_name} exists...")
+        return table_name in self.get_tables()
+
+    def drop_table(self, table):
+        from sqlalchemy import Table
+        if isinstance(table, Table):
+            self.logger.info(f"Dropping table {table.name}...")
+            table.drop(self.engine)
+        else:
+            self.logger.error("table must be a sqlalchemy.Table object")
+            exit(1)
+

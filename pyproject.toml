@@ -21,6 +21,7 @@ image = [
 request = [
     "bs4>=0.0.2",
     "requests>=2.32.4",
+    "fake-useragent>=2.2.0",
 ]
 clip = [
     "pyperclip>=1.9.0",

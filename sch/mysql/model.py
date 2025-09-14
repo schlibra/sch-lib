@@ -1,146 +1,150 @@
-from sqlalchemy import Table, MetaData, Column, Integer, String, Boolean, Float, DateTime
+from .table import table
+import datetime
 
-HelloGithub = Table(
+HelloGithub = table(
     'hello_github',
-    MetaData(),
-    Column('id', Integer(), primary_key=True, autoincrement=True),
-    Column('repo_name', String(100)),
-    Column('year', Integer()),
-    Column('month', Integer()),
-    Column('status', String(5)),
-    mysql_engine='InnoDB',
+    [
+        ('id', int, True),
+        ('repo_name', str, 100),
+        ('year', int),
+        ('month', int),
+        ('status', str, 5),
+    ]
 )
-VideoList = Table(
+VideoList = table(
     'mwcy_video_list',
-    MetaData(),
-    Column('id', Integer(), primary_key=True, autoincrement=True),
-    Column('video_id', Integer()),
-    Column('video_name', String(255)),
-    Column('video_img', String(500)),
-    Column('video_description', String(800)),
-    Column('status', Integer()),
-    mysql_engine='InnoDB',
+    [
+        ('id', int, True),
+        ('video_id', int),
+        ('video_name', str, 255),
+        ('video_img', str, 500),
+        ('video_description', str, 800),
+        ('status', int),
+    ]
 )
-VideoLink = Table(
+VideoLink = table(
     'mwcy_video_link',
-    MetaData(),
-    Column('id', Integer(), primary_key=True, autoincrement=True),
-    Column('video_id', Integer()),
-    Column('video_index', String(100)),
-    Column('video_link', String(500)),
-    Column('status', Integer()),
+    [
+        ('id', int, True),
+        ('video_id', int),
+        ('video_index', str, 100),
+        ('video_link', str, 500),
+        ('status', int),
+    ]
 )
-OpenList = Table(
+OpenList = table(
     'openlist',
-    MetaData(),
-    Column('id', Integer(), autoincrement=True, primary_key=True),
-    Column('name', String(50)),
-    Column('host', String(100)),
-    Column('port', Integer()),
-    Column('token', String(128)),
-    Column('ssl', Boolean()),
-    Column('enable', Boolean()),
-    mysql_engine='InnoDB'
+    [
+        ('id', int, True),
+        ('name', str, 50),
+        ('host', str, 100),
+        ('port', int),
+        ('token', str, 128),
+        ('ssl', bool),
+        ('enable', bool),
+    ]
 )
-EmailList = Table(
+EmailList = table(
     'email_list',
-    MetaData(),
-    Column('id', Integer(), autoincrement=True, primary_key=True),
-    Column('username', String(100)),
-    Column('email', String(100)),
-    Column('password', String(100)),
-    mysql_engine='InnoDB'
+    [
+        ('id', int, True),
+        ('username', str, 100),
+        ('email', str, 100),
+        ('password', str, 100),
+    ]
 )
-SteamUser = Table(
+SteamUser = table(
     'steam_user',
-    MetaData(),
-    Column('id', Integer(), autoincrement=True, primary_key=True),
-    Column('username', String(100)),
-    Column('email', String(100)),
-    Column('password', String(100)),
-    Column('resume_code', String(100)),
-    Column('steam_id', String(100)),
-    Column('created_at', DateTime()),
-    Column('cat', String(100)),
-    Column('hat', String(100)),
-    Column('steam_index', Integer()),
-    mysql_engine='InnoDB'
+    [
+        ('id', int, True),
+        ('username', str, 100),
+        ('email', str, 100),
+        ('password', str, 100),
+        ('resume_code', str, 100),
+        ('steam_id', str, 100),
+        ('created_at', datetime),
+        ('cat', str, 100),
+        ('hat', str, 100),
+        ('steam_index', int),
+    ]
 )
-GithubUser = Table(
+GithubUser = table(
     'github_user',
-    MetaData(),
-    Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('username', String(100)),
-    Column('password', String(200)),
-    Column('email', String(200)),
-    Column('totp', String(50)),
-    mysql_engine='InnoDB',
+    [
+        ('id', int, True),
+        ('username', str, 100),
+        ('password', str, 200),
+        ('email', str, 200),
+        ('totp', str, 50),
+    ]
 )
-SteamInventory = Table(
+SteamInventory = table(
     'steam_inventory',
-    MetaData(),
-    Column('id', Integer(), autoincrement=True, primary_key=True),
-    Column('game_id', String(100)),
-    Column('item_name', String(100)),
-    Column('item_name_id', String(100)),
-    Column('color', String(20)),
-    mysql_engine='InnoDB'
+    [
+        ('id', int, True),
+        ('game_id', str, 100),
+        ('item_name', str, 100),
+        ('item_name_id', str, 100),
+        ('color', str, 20),
+    ]
 )
-SteamMarketPrice = Table(
+SteamMarketPrice = table(
     'steam_market_price',
-    MetaData(),
-    Column('id', Integer(), autoincrement=True, primary_key=True),
-    Column('game_id', String(100)),
-    Column('item_name', String(100)),
-    Column('high_price', String(100)),
-    Column('low_price', String(100)),
-    Column('year', Integer()),
-    Column('month', Integer()),
-    Column('day', Integer()),
-    Column('hour', Integer()),
-    Column('minute', Integer()),
-    mysql_engine='InnoDB'
+    [
+        ('id', int, True),
+        ('game_id', str, 100),
+        ('item_name', str, 100),
+        ('item_name_id', str, 100),
+        ('high_price', str, 100),
+        ('low_price', str, 100),
+        ('year', int),
+        ('month', int),
+        ('day', int),
+        ('hour', int),
+        ('minute', int),
+    ]
 )
-SteamMarketItem = Table(
+SteamMarketItem = table(
     'steam_market_item',
-    MetaData(),
-    Column('id', Integer(), autoincrement=True, primary_key=True),
-    Column('game_id', String(100)),
-    Column('item_name', String(100)),
-    Column('item_name_id', String(100)),
-    mysql_engine='InnoDB'
+    [
+        ('id', int, True),
+        ('game_id', str, 100),
+        ('item_name', str, 100),
+        ('item_name_id', str, 100),
+    ]
 )
-ProxyPool = Table(
+ProxyPool = table(
     'proxy_pool',
-    MetaData(),
-    Column('id', Integer(), autoincrement=True, primary_key=True),
-    Column('ip', String(100)),
-    Column('port', Integer()),
-    Column('protocol', String(100)),
-    Column('location', String(100)),
-    Column('available', Boolean()),
-    mysql_engine='InnoDB'
+    [
+        ('id', int, True),
+        ('ip', str, 100),
+        ('port', int),
+        ('protocol', str, 100),
+        ('location', str, 100),
+        ('available', bool),
+    ]
 )
-SteamMarketHistory = Table(
+SteamMarketHistory = table(
     'steam_market_history',
-    MetaData(),
-    Column('id', Integer(), autoincrement=True, primary_key=True),
-    Column('trade_id', String(100)),
-    Column('action', String(100)),
-    Column('price', String(100)),
-    Column('date', String(100)),
-    Column('game_name', String(100)),
-    Column('item_name', String(100)),
-    Column('color', String(20)),
-    Column('value', Float()),
-    mysql_engine='InnoDB'
+    [
+        ('id', int, True),
+        ('trade_id', str, 100),
+        ('action', str, 100),
+        ('price', str, 100),
+        ('date', str, 100),
+        ('game_name', str, 100),
+        ('item_name', str, 100),
+        ('color', str, 20),
+        ('value', float),
+    ]
 )
-YesCaptchaUser = Table(
+YesCaptchaUser = table(
     'yes_captcha_user',
-    MetaData(),
-    Column('id', Integer(), autoincrement=True, primary_key=True),
-    Column('username', String(100)),
-    Column('password', String(100)),
-    Column('email', String(100)),
-    Column('api_key', String(100)),
+    [
+        ('id', int, True),
+        ('username', str, 100),
+        ('password', str, 100),
+        ('email', str, 100),
+        ('api_key', str, 100),
+    ]
 )
