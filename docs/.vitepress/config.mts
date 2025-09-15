@@ -1,13 +1,35 @@
 import {DefaultTheme, defineConfig} from 'vitepress'
+import {groupIconMdPlugin, groupIconVitePlugin} from "vitepress-plugin-group-icons";
+import {MermaidMarkdown, MermaidPlugin, withMermaid} from "vitepress-plugin-mermaid";
 
-// https://vitepress.dev/reference/site-config
 export default defineConfig({
     title: "SCH-Lib 文档",
     description: "sch lib 文档",
     lang: 'zh-CN',
     lastUpdated: true,
     markdown: {
-        lineNumbers: true
+        lineNumbers: true,
+        config: (md) => {
+            md.use(MermaidMarkdown)
+            md.use(groupIconMdPlugin)
+            md.renderer.rules.heading_close = (tokens, idx, options, env, slf) => {
+                let htmlResult = slf.renderToken(tokens, idx, options);
+                if (tokens[idx].tag === 'h1') htmlResult += `<ArticleMetadata />`;
+                return htmlResult;
+            }
+        }
+    },
+    vite: {
+        plugins: [
+            groupIconVitePlugin(),
+            MermaidPlugin()
+        ],
+        optimizeDeps: {
+            include: ['mermaid'],
+        },
+        ssr: {
+            noExternal: ['mermaid']
+        }
     },
     themeConfig: {
         // https://vitepress.dev/reference/default-theme-config
@@ -93,3 +115,7 @@ export default defineConfig({
     }
 
 })
+
+
+// https://vitepress.dev/reference/site-config
+

@@ -32,13 +32,26 @@ features:
     icon: 🖼️
 ---
 ## 使用sch-lib轻松进行开发
-```bash
+```bash [安装依赖]
 pip install sch-lib[mysql]
 ```
-```python
+::: code-group
+```python [main.py]
 from sch.config import Config
 from sch.mysql import MySQL
 
 config = Config.load_json() # 加载配置 [!code focus]
 mysql = MySQL(config) # 连接数据库 [!code focus]
 ```
+```json [config/config.json]
+{
+  "mysql": {
+    "host": "localhost",
+    "port": 3306,
+    "user": "root",
+    "pass": "123456",
+    "name": "root"
+  }
+}
+```
+:::
