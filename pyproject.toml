@@ -38,8 +38,10 @@ all = [
     "sqlalchemy>=2.0.43",
     "boto3>=1.40.10",
     "pillow>=11.3.0",
+    "qrcode>=8.2",
     "bs4>=0.0.2",
     "requests>=2.32.4",
+    "fake-useragent>=2.2.0",
     "pyperclip>=1.9.0",
     "markdown>=3.9",
     "markdownify>=1.2.0",
@@ -69,5 +71,6 @@ dev = [
     "boto3-stubs[full]>=1.40.10",
     "pdoc>=15.0.4",
     "pip>=25.2",
+    "pip-tools>=7.5.0",
     "setuptools>=80.9.0",
 ]
