@@ -21,3 +21,20 @@ def generate_password(length=8, strong_password=False):
 def uuid():
     import uuid as _
     return _.uuid4().hex
+
+#新功能，暂未测试，不确定是否可用，但一定仅限大小写字母
+def caesar(text, key):
+    import string
+
+    lowercase = string.ascii_lowercase
+    uppercase = string.ascii_uppercase
+    digits = string.digits
+    symbols = '=/'
+
+    all_chars = lowercase + uppercase + digits + symbols
+    total = len(all_chars)
+    shifted = all_chars[(key % total):] + all_chars[:(key % total)]
+
+    table = str.maketrans(all_chars, shifted)
+
+    return text.translate(table)
