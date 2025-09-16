@@ -14,4 +14,7 @@ from .util import (
     paste_text,
     html_to_markdown,
     markdown_to_html,
+    render_mermaid,
+    qrcode_print,
+    qrcode_image,
 )

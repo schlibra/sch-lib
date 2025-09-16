@@ -18,6 +18,9 @@ s3 = [
 image = [
     "pillow>=11.3.0",
 ]
+qrcode = [
+    "qrcode>=8.2",
+]
 request = [
     "bs4>=0.0.2",
     "requests>=2.32.4",
