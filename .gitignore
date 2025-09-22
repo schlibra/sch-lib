@@ -12,3 +12,4 @@ uv.lock
 *data.json
 cache/
 node_modules/
+/_*.py

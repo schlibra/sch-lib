@@ -12,7 +12,7 @@ title: 配置文件转换
 ```python {4-12}
 from sch.config.convert import ConfigConverter
 
-converter = converter.load_data({
+converter = ConfigConverter.load_data({
   "mysql": {
     "host": "localhost",
     "port": 3306,
@@ -29,7 +29,7 @@ converter = converter.load_data({
 ```python {4}
 from sch.config.convert import ConfigConverter
 
-converter = converter.load_json()
+converter = ConfigConverter.load_json()
 ```
 ### 加载YAML配置文件
 ::: tip 加载YAML配置文件
@@ -38,7 +38,7 @@ converter = converter.load_json()
 ```python {4}
 from sch.config.convert import ConfigConverter
 
-converter = converter.load_yaml()
+converter = ConfigConverter.load_yaml()
 ```
 ### 加载TOML配置文件
 ::: tip 加载TOML配置文件
@@ -47,7 +47,7 @@ converter = converter.load_yaml()
 ```python {4}
 from sch.config.convert import ConfigConverter
 
-converter = converter.load_toml()
+converter = ConfigConverter.load_toml()
 ```
 ### 加载INI配置文件
 ::: tip 加载INI配置文件
@@ -56,7 +56,16 @@ converter = converter.load_toml()
 ```python {4}
 from sch.config.convert import ConfigConverter
 
-converter = converter.load_ini()
+converter = ConfigConverter.load_ini()
+```
+### 加载XML配置文件
+::: tip 加载XML配置文件
+`load_xml(config_file: str='config/config.xml')`
+:::
+```python {4}
+from sch.config.convert import ConfigConverter
+
+converter = ConfigConverter.load_xml()
 ```
 ## 导出配置文件
 ### 输出dict对象
@@ -64,6 +73,9 @@ converter = converter.load_ini()
 `dump_data()`
 :::
 ```python
+from sch import ConfigConverter
+
+converter = ConfigConverter.load_json()
 converter.dump_data()
 ```
 ::: details 输出结果
@@ -106,4 +118,11 @@ converter.save_toml()
 :::
 ```python {4}
 converter.save_ini()
+```
+### 导出XML配置文件
+::: tip 导出XML配置文件
+`save_xml(config_file: str='config/config.xml')`
+:::
+```python {4}
+converter.save_xml()
 ```
