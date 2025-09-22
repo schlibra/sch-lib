@@ -1,5 +1,4 @@
-from sch import ConfigConverter
+from sch import get_mac_info
 
 if __name__ == '__main__':
-    config = ConfigConverter.load_json()
-    config.save_xml()
+    print(get_mac_info('d0:0d:f7:ba:33:e2'))

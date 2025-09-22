@@ -17,4 +17,6 @@ from .util import (
     render_mermaid,
     qrcode_print,
     qrcode_image,
+    get_mac_info,
+    IP
 )
