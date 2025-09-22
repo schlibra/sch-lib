@@ -1,7 +1,5 @@
-from sch.util.qrcode import qrcode_print, qrcode_image
+from sch import ConfigConverter
 
 if __name__ == '__main__':
-    url = "https://sch-lib.schhz.cn"
-    qrcode_print(url, border=1, invert=True)
-    qrcode_image(url, "2.png")
-
+    config = ConfigConverter.load_json()
+    config.save_xml()

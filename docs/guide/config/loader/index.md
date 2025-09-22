@@ -13,7 +13,7 @@ title: 配置文件加载类
 ```python
 from sch.config import Config
 
-config = config.load_json()
+config = Config.load_json()
 ```
 ### 加载YAML格式配置文件
 ::: tip 加载YAML格式配置文件
@@ -23,7 +23,7 @@ config = config.load_json()
 ```python
 from sch.config import Config
 
-config = config.load_yaml()
+config = Config.load_yaml()
 ```
 ### 加载INI格式配置文件
 ::: tip 加载INI格式配置文件
@@ -33,7 +33,7 @@ config = config.load_yaml()
 ```python
 from sch.config import Config
 
-config = config.load_ini()
+config = Config.load_ini()
 ```
 ### 加载TOML格式配置文件
 ::: tip 加载TOML格式配置文件
@@ -43,8 +43,32 @@ config = config.load_ini()
 ```python
 from sch.config import Config
 
-config = config.load_toml()
+config = Config.load_toml()
 ```
+### 加载XML格式配置文件
+::: tip 加载XML格式配置文件
+`load_xml(config_file: str='config/config.xml')`
+:::
+如果需要自定义配置文件路径，可以传入`config_file`参数。
+::: code-group
+```python [main.py]
+from sch import Config
+
+config = Config.load_xml()
+```
+```xml [config/config.xml]
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+    <config key="mysql">
+        <config key="host">localhost</config>
+        <config key="port">3306</config>
+        <config key="user">root</config>
+        <config key="pass">123456</config>
+        <config key="name">root</config>
+    </config>
+</config>
+```
+:::
 ## 获取键值
 ::: tip 获取键值
 `get(key: str)`
@@ -53,7 +77,7 @@ config = config.load_toml()
 ```python
 from sch.config import Config
 
-config = config.load_json()
+config = Config.load_json()
 config.get('mysql.host')
 ```
 ::: details 输出内容

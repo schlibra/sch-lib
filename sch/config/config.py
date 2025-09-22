@@ -2,6 +2,7 @@ import configparser
 import json
 import yaml
 import toml
+from xml.etree import ElementTree
 from ..logger import Logger
 from ..util.password import password_hide
 
@@ -60,6 +61,21 @@ class Config:
         config = configparser.ConfigParser()
         config.read(file_path)
         self.config = {s: dict(config.items(s)) for s in config.sections()}
+        return self
+    @staticmethod
+    def load_xml(file_path='config/config.xml'):
+        self = Config()
+        self.logger.info(f'Loading XML config file: {file_path}')
+        _tree = ElementTree.parse(file_path)
+        _config = {}
+        for _item in _tree.getroot():
+            if _text := _item.text.strip():
+                _config[_item.get('key')] = _text
+            else:
+                _config[_item.get('key')] = {}
+                for _subitem in _item:
+                    _config[_item.get('key')][_subitem.get('key')] = _subitem.text
+        self.data = _config
         return self
     def get(self, key):
         """
