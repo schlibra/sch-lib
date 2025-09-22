@@ -46,30 +46,6 @@ jobs:
         with:
           name: sch_lib-${{ steps.version.outputs.version }}-py3-none-any.whl
           path: dist/sch_lib-${{ steps.version.outputs.version }}-py3-none-any.whl
-      - name: Setup NodeJS
-        uses: actions/setup-node@v5
-        with:
-          node-version: 20
-          cache: 'npm'
-      - name: Install Dependencies
-        run: |
-          npm install
-      - name: Build Package
-        run: |
-          npm run docs:build
-      - name: Compress docs
-        uses: somaz94/compress-decompress@v1
-        with:
-          command: compress
-          source: docs/.vitepress/dist
-          format: zip
-          dest: dist
-          destfilename: sch_lib-docs-${{ steps.version.outputs.version }}
-      - name: Upload Artifact(docs)
-        uses: actions/upload-artifact@v4
-        with:
-          name: sch_lib-docs-${{ steps.version.outputs.version }}.zip
-          path: dist/sch_lib-docs-${{ steps.version.outputs.version }}.zip
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
@@ -77,4 +53,4 @@ jobs:
           token: ${{ github.token }}
           tag: v${{ steps.version.outputs.version }}
           name: v${{ steps.version.outputs.version }}
-          artifacts: "dist/sch_lib-${{ steps.version.outputs.version }}.tar.gz,dist/sch_lib-${{ steps.version.outputs.version }}-py3-none-any.whl,dist/sch_lib-docs-${{ steps.version.outputs.version }}.zip"
+          artifacts: "dist/sch_lib-${{ steps.version.outputs.version }}.tar.gz,dist/sch_lib-${{ steps.version.outputs.version }}-py3-none-any.whl"
