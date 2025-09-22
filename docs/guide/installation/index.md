@@ -36,7 +36,7 @@ pip install sch-lib[all]
 pip install sch-lib[mysql]
 ```
 ### request依赖 {#request-dependency}
-安装[request]依赖后才可以使用`sch.image_api`、`sch.openlist`模块
+安装[request]依赖后才可以使用`sch.image_api`、`sch.openlist`、`sch.util.mermaid`模块
 ```bash
 pip install sch-lib[request]
 ```
@@ -49,4 +49,19 @@ pip install sch-lib[s3]
 安装[image]依赖后才可以使用`sch.avatar`模块
 ```bash
 pip install sch-lib[image]
+```
+### qrcode依赖 {#qrcode-dependency}
+安装[qrcode]依赖后才可以使用`sch.util.qrcode`模块
+```bash
+pip install sch-lib[qrcode]
+```
+### clip依赖 {#clip-dependency}
+安装[clip]依赖后才可以使用`sch.util.clip`模块
+```bash
+pip install sch-lib[clip]
+```
+### markdown依赖 {#markdown-dependency}
+安装[markdown]依赖后才可以使用`sch.util.markdown`模块
+```bash
+pip install sch-lib[markdown]
 ```

@@ -12,7 +12,7 @@ def qrcode_print(data, border: int = 1, invert: bool = False):
     qr.make()
     qr.print_ascii(out=None, tty=False, invert=invert)
 
-def qrcode_image(data, filename, border: int = 1, invert: bool = True):
+def qrcode_image(data, filename, border: int = 1):
     from ..logger import Logger
     logger = Logger("qrcode")
     try:

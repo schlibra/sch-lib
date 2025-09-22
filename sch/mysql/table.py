@@ -12,17 +12,19 @@ def table(name, columns):
         exit(1)
     args = []
     def get_column_type(_type, _length = None):
-        if _type == int:
+        if _type == int or _type == 'int' or _type == 'integer':
             return Integer()
-        elif _type == str:
+        elif _type == str or _type == 'str' or _type == 'string':
+            if _length is None:
+                return String(255)
             return String(_length)
-        elif _type == bool:
+        elif _type == bool or _type == 'bool' or _type == 'boolean':
             return Boolean()
-        elif _type == float:
+        elif _type == float or _type == 'float':
             return Float()
-        elif _type == datetime:
+        elif _type == datetime or _type == datetime.datetime or _type == 'datetime':
             return DateTime()
-        elif _type == datetime.date:
+        elif _type == datetime.date or _type == 'date':
             return Date()
         else:
             return None

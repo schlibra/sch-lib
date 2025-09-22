@@ -7,6 +7,7 @@ export default defineConfig({
     description: "sch lib 文档",
     lang: 'zh-CN',
     lastUpdated: true,
+    ignoreDeadLinks: true,
     markdown: {
         lineNumbers: true,
         config: (md) => {
@@ -47,6 +48,7 @@ export default defineConfig({
             prev: '上一篇',
             next: '下一篇'
         },
+        returnToTopLabel: '返回顶部',
         search: {
             provider: 'local',
             options: {
@@ -80,7 +82,8 @@ export default defineConfig({
             {
                 text: '日志处理',
                 items: [
-                    {text: '日志处理', link: '/guide/logger/'}
+                    {text: '日志处理对象', link: '/guide/logger/logger/'},
+                    {text: '日志配置', link: '/guide/logger/config/'}
                 ]
             },
             {
@@ -92,16 +95,25 @@ export default defineConfig({
             {
                 text: 'MySQL',
                 items: [
-                    {text: 'MySQL', link: '/guide/mysql/'}
+                    {text: 'MySQL对象', link: '/guide/mysql/mysql/'},
+                    {text: 'MySQL表对象', link: '/guide/mysql/table/'}
                 ]
             },
             {
                 text: '实用工具',
                 items: [
                     {text: 'Base64转换', link: '/guide/utils/base64/'},
-                    {text: '密码隐藏', link: '/guide/utils/password/'},
+                    {text: '剪切板操作', link: '/guide/utils/clip/'},
                     {text: 'Markdown转换', link: '/guide/utils/markdown/'},
-                    {text: '剪切板操作', link: '/guide/utils/clip/'}
+                    {text: '密码隐藏', link: '/guide/utils/password/'},
+                    {text: '二维码生成', link: '/guide/utils/qrcode/'},
+                    {text: 'Mermaid', link: '/guide/utils/mermaid/'}
+                ]
+            },
+            {
+                text: '对象存储',
+                items: [
+                    {text: 'S3', link: '/guide/s3/'}
                 ]
             }
         ],
