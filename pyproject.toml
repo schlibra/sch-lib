@@ -1,6 +1,6 @@
 [project]
 name = "sch-lib"
-version = "1.0.5"
+version = "1.0.6"
 requires-python = ">=3.9"
 dependencies = [
     "pyyaml>=6.0.2",

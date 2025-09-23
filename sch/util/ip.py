@@ -38,3 +38,5 @@ class IP:
     @property
     def ip_bin(self):
         return bin(self.digits)[2:].zfill(32)
+    def __str__(self):
+        return f"IP Address: {self.ip_str}\nIP Digits: {self.ip_digits}\nIP Hex: {self.ip_hex}\nIP Binary: {self.ip_bin}"

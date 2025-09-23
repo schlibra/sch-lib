@@ -1,4 +1,5 @@
-from sch import get_mac_info
+from sch import IP, get_mac_info
 
 if __name__ == '__main__':
-    print(get_mac_info('d0:0d:f7:ba:33:e2'))
+    print(IP.from_ip('192.168.1.1'))
+    print(get_mac_info('D4:5D:64:11:22:33'))

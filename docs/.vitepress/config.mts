@@ -107,7 +107,9 @@ export default defineConfig({
                     {text: 'Markdown转换', link: '/guide/utils/markdown/'},
                     {text: '密码隐藏', link: '/guide/utils/password/'},
                     {text: '二维码生成', link: '/guide/utils/qrcode/'},
-                    {text: 'Mermaid', link: '/guide/utils/mermaid/'}
+                    {text: 'Mermaid', link: '/guide/utils/mermaid/'},
+                    {text: 'IP计算', link: '/guide/utils/ip/'},
+                    {text: 'MAC信息查询', link: '/guide/utils/mac/'}
                 ]
             },
             {
