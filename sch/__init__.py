@@ -2,7 +2,7 @@ from .s3 import S3
 from .avatar import generate_avatar
 from .config import Config, ConfigConverter
 from .logger import Logger, LoggerConfig
-from .mysql import MySQL, table, Or, And, Not, Null
+from .db import MySQL, SQLite, Or, And, Not, Null
 from .util import (
     base64_decode,
     base64_encode,
@@ -17,4 +17,6 @@ from .util import (
     render_mermaid,
     qrcode_print,
     qrcode_image,
+    get_mac_info,
+    IP
 )

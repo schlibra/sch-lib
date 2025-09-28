@@ -93,10 +93,10 @@ export default defineConfig({
                 ]
             },
             {
-                text: 'MySQL',
+                text: '数据库',
                 items: [
-                    {text: 'MySQL对象', link: '/guide/mysql/mysql/'},
-                    {text: 'MySQL表对象', link: '/guide/mysql/table/'}
+                    {text: 'MySQL', link: '/guide/database/mysql/'},
+                    {text: 'SQLite', link: '/guide/database/sqlite/'}
                 ]
             },
             {
@@ -107,7 +107,9 @@ export default defineConfig({
                     {text: 'Markdown转换', link: '/guide/utils/markdown/'},
                     {text: '密码隐藏', link: '/guide/utils/password/'},
                     {text: '二维码生成', link: '/guide/utils/qrcode/'},
-                    {text: 'Mermaid', link: '/guide/utils/mermaid/'}
+                    {text: 'Mermaid', link: '/guide/utils/mermaid/'},
+                    {text: 'IP计算', link: '/guide/utils/ip/'},
+                    {text: 'MAC信息查询', link: '/guide/utils/mac/'}
                 ]
             },
             {

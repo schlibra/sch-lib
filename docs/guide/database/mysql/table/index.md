@@ -1,7 +1,7 @@
 ---
 title: 创建表对象
 ---
-## 创建表对象
+# 创建表对象
 ::: tip 创建表对象
 `table(name, columns)`
 :::
@@ -11,7 +11,7 @@ title: 创建表对象
 | name | string | 表名 |
 | columns | array | 列信息 |
 
-### 列信息
+## 列信息
 列信息是一个数组，数组的每个元素都是一个元组，包含以下属性：
 > (列名, 列类型, 列选项)
 列类型可以为以下类型（类型可传入字符串或python的标准类型对象）：
@@ -26,11 +26,11 @@ title: 创建表对象
 - bool: True时设置该列为主键，并且该值可自增，False时不设置主键
 - int: 设置该列的长度，仅对字符串类型有效，默认为255
 
-### 示例
+## 示例
 ```python [table.py]
-from sch import table
+from sch import MySQL
 
-UserList = table(
+UserList = MySQL.table(
     'user_list',
     [
         ('id', int, True),

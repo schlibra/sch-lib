@@ -1,52 +1,47 @@
-from typing import TypeVar, Tuple, Any
-from sch.logger import Logger
+from abc import ABC, abstractmethod
 
-class MySQL:
-    _TP = TypeVar("_TP", bound=Tuple[Any, ...])
+from sch import Logger
+
+
+class Database(ABC):
     engine = None
     connection = None
     logger: Logger
-    def __init__(self, config, echo=False):
-        self.logger = Logger("MySQL")
-        try:
-            from sqlalchemy import create_engine, Engine, Connection
-        except (ModuleNotFoundError, ImportError):
-            self.logger.error('sch-lib[mysql] is required for MySQL support')
-            exit(1)
-        self.logger.info("Initializing MySQL...")
-        self.engine = create_engine(
-            f"mysql+pymysql://{config.get('mysql.user')}:{config.get('mysql.pass')}@{config.get('mysql.host')}:{config.get('mysql.port')}/{config.get('mysql.name')}?charset=utf8mb4",
-            echo=echo
-        )
-        self.connection = self.engine.connect()
-
+    @abstractmethod
+    def __init__(self):
+        pass
+    @staticmethod
+    @abstractmethod
+    def table(name, columns):
+        pass
     def connect(self):
-        self.logger.info("Connecting to MySQL...")
+        self.logger.info("Connecting to database...")
         self.connection = self.engine.connect()
-
-    def set_echo(self, echo=False):
-        self.logger.info(f"Setting echo to {echo}...")
+    @property
+    def echo(self):
+        return self.engine.echo
+    @echo.setter
+    def echo(self, echo=False):
+        self.logger.info(f"Setting echo to {echo}")
         self.engine.echo = echo
-
     def create_table(self, table):
         from sqlalchemy import Table
         if isinstance(table, Table):
             self.logger.info(f"Creating table {table.name}...")
             table.create(self.engine)
         else:
-            raise TypeError("table must be a sqlalchemy.Table object")
-
+            self.logger.error("table must be a sqlalchemy.Table object")
+            exit(1)
     def fetchall(self, statement):
         from sqlalchemy import Executable, text
-
         if isinstance(statement, str):
             statement = text(statement)
         if isinstance(statement, Executable):
             self.logger.info(f"Executing statement {statement}...")
             return self.connection.execute(statement).fetchall()
         else:
-            raise TypeError("statement must be a sqlalchemy.Executable object or a string")
-
+            self.logger.error("statement must be a sqlalchemy.Executable object or a string")
+            exit(1)
     def fetchone(self, statement):
         from sqlalchemy import Executable, text
         if isinstance(statement, str):
@@ -55,8 +50,8 @@ class MySQL:
             self.logger.info(f"Executing statement {statement}...")
             return self.connection.execute(statement).fetchone()
         else:
-            raise TypeError("statement must be a sqlalchemy.Executable object or a string")
-
+            self.logger.error("statement must be a sqlalchemy.Executable object or a string")
+            exit(1)
     def select(self, table, *where):
         from sqlalchemy import Table
         if isinstance(table, Table):
@@ -69,8 +64,8 @@ class MySQL:
                 self.logger.info(f"Executing statement {statement}...")
                 return self.connection.execute(statement).fetchall()
         else:
-            raise TypeError("table must be a sqlalchemy.Table object")
-
+            self.logger.error("table must be a sqlalchemy.Table object")
+            exit(1)
     def exists(self, table, *where):
         from sqlalchemy import Table
         if isinstance(table, Table):
@@ -80,8 +75,8 @@ class MySQL:
             else:
                 return False
         else:
-            raise TypeError("table must be a sqlalchemy.Table object")
-
+            self.logger.error("table must be a sqlalchemy.Table object")
+            exit(1)
 
     def insert(self, table, values: dict, commit=True):
         from sqlalchemy import Table, insert
@@ -92,7 +87,8 @@ class MySQL:
             if commit:
                 self.commit()
         else:
-            raise TypeError("table must be a sqlalchemy.Table object")
+            self.logger.error("table must be a sqlalchemy.Table object")
+            exit(1)
 
     def update(self, table, values: dict, *where, commit=True):
         from sqlalchemy import Table
@@ -110,8 +106,8 @@ class MySQL:
                 if commit:
                     self.commit()
         else:
-            raise TypeError("table must be a sqlalchemy.Table object")
-
+            self.logger.error("table must be a sqlalchemy.Table object")
+            exit(1)
     def delete(self, table, *where, commit=True):
         from sqlalchemy import Table
         if isinstance(table, Table):
@@ -130,7 +126,6 @@ class MySQL:
         else:
             self.logger.error("table must be a sqlalchemy.Table object")
             exit(1)
-
     def execute(self, statement, commit=True):
         from sqlalchemy import text, Executable
         if isinstance(statement, str):
@@ -141,22 +136,17 @@ class MySQL:
             if commit:
                 self.commit()
         else:
-            raise TypeError("statement must be a sqlalchemy.Executable object or a string")
-
+            self.logger.error("statement must be a sqlalchemy.Executable object or a string")
+            exit(1)
     def commit(self):
         self.logger.info("Committing...")
         self.connection.commit()
-
-    def get_version(self) -> str:
-        self.logger.info("Getting MySQL version...")
-        result = self.fetchone("SELECT VERSION()")
-        return result[0]
-
+    @abstractmethod
+    def get_version(self):
+        pass
+    @abstractmethod
     def get_tables(self):
-        self.logger.info("Getting MySQL tables...")
-        result = self.fetchall("SHOW TABLES")
-        return [row[0] for row in result]
-
+        pass
     def table_exists(self, table):
         from sqlalchemy import Table
         if isinstance(table, Table):
@@ -177,4 +167,3 @@ class MySQL:
         else:
             self.logger.error("table must be a sqlalchemy.Table object")
             exit(1)
-

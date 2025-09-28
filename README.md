@@ -224,6 +224,10 @@ led
 
 感谢所有为此项目做出贡献的开发者！
 
+<a href="https://github.com/schlibra/sch-lib/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=schlibra/sch-lib" />
+</a>
+
 ---
 
 如果您觉得这个项目有用，请给它一个 ⭐️！
