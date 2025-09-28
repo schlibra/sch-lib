@@ -13,3 +13,4 @@ uv.lock
 cache/
 node_modules/
 /_*.py
+**/*.db

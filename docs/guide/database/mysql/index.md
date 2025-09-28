@@ -2,9 +2,9 @@
 title: MySQL数据库
 ---
 # MySQL数据库
-::: tip 该模块依赖[mysql]
+::: tip 该模块依赖[db]
 ```bash
-pip install sch-lib[image]
+pip install sch-lib[db]
 ```
 :::
 提供了 `MySQL` 数据库的常用操作接口，简化了连接管理、表创建、数据查询、数据更新等流程，适用于需要快速对接 `MySQL` 数据库的 `Python` 项目。
@@ -41,8 +41,7 @@ name = "root"
 | echo | bool | 是否输出MySQL执行日志 |
 
 ```python
-from sch.mysql import MySQL
-from sch.config import Config
+from sch import MySQL, Config
 
 config = Config.load_json()
 mysql = MySQL(config.mysql)
@@ -54,14 +53,22 @@ mysql = MySQL(config.mysql)
 连接数据库，该操作在初始化对象时自动执行，无需手动调用。
 ## 设置输出日志
 ::: tip 设置输出日志
-`set_echo(echo: bool)`
+`echo`
 :::
-设置是否输出MySQL执行日志。
+设置/获取是否输出MySQL执行日志。
+```python
+from sch import Config, MySQL
+
+config = Config.load_json()
+mysql = MySQL(config)
+mysql.echo = True
+print(mysql.echo) # True
+```
 ## 创建表
 ::: tip 创建表
 `create_table(table: Table)`
 :::
-创建表，`Table`对象参考[MySQL表](../table)
+创建表，`Table`对象参考[MySQL表](table)
 ::: code-group
 ```python [main.py]
 from .table import UserList
@@ -72,9 +79,9 @@ mysql = MySQL(config)
 mysql.create_table(UserList)
 ```
 ```python [table.py]
-from sch import table
+from sch import MySQL
 
-UserList = table(
+UserList = MySQL.table(
     "user_list",
     [
         ('id', int, True),
@@ -98,27 +105,27 @@ UserList = table(
 ::: tip 查询数据
 `select(table: Table, *where)`
 :::
-查询数据，`Table`对象参考[MySQL表](../table)，`*where`为查询条件，可以指定多个条件。
+查询数据，`Table`对象参考[MySQL表](table)，`*where`为查询条件，可以指定多个条件。
 ## 查询数据是否存在
 ::: tip 查询数据是否存在
 `exist(table: Table, *where)`
 :::
-查询数据是否存在，`Table`对象参考[MySQL表](../table)，`*where`为查询条件，可以指定多个条件。
+查询数据是否存在，`Table`对象参考[MySQL表](table)，`*where`为查询条件，可以指定多个条件。
 ## 插入数据
 ::: tip 插入数据
 `insert(table: Table, values: dict, commit: bool = True)`
 :::
-插入数据，`Table`对象参考[MySQL表](../table)，`values`为插入数据，`commit`为是否立即提交，默认为`True`。
+插入数据，`Table`对象参考[MySQL表](table)，`values`为插入数据，`commit`为是否立即提交，默认为`True`。
 ## 更新数据
 ::: tip 更新数据
 `update(table: Table, values: dict, *where, commit: bool = True)`
 :::
-更新数据，`Table`对象参考[MySQL表](../table)，`values`为更新数据，`*where`为更新条件，可以指定多个条件，`commit`为是否立即提交，默认为`True`。
+更新数据，`Table`对象参考[MySQL表](table)，`values`为更新数据，`*where`为更新条件，可以指定多个条件，`commit`为是否立即提交，默认为`True`。
 ## 删除数据
 ::: tip 删除数据
 `delete(table: Table, *where, commit: bool = True)`
 :::
-删除数据，`Table`对象参考[MySQL表](../table)，`*where`为删除条件，可以指定多个条件，`commit`为是否立即提交，默认为`True`。
+删除数据，`Table`对象参考[MySQL表](table)，`*where`为删除条件，可以指定多个条件，`commit`为是否立即提交，默认为`True`。
 ## 执行语句
 ::: tip 执行语句
 `execute(statement: Executable|str, commit: bool = True)`
@@ -138,9 +145,9 @@ UserList = table(
 ::: tip 查询表是否存在
 `table_exists(table: Table)`
 :::
-查询表是否存在，`Table`对象参考[MySQL表](../table)。
+查询表是否存在，`Table`对象参考[MySQL表](table)。
 ## 删除表
 ::: tip 删除表
 `drop_table(table: Table)`
 :::
-删除表，`Table`对象参考[MySQL表](../table)。
+删除表，`Table`对象参考[MySQL表](table)。

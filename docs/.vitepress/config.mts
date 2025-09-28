@@ -93,10 +93,10 @@ export default defineConfig({
                 ]
             },
             {
-                text: 'MySQL',
+                text: '数据库',
                 items: [
-                    {text: 'MySQL对象', link: '/guide/mysql/mysql/'},
-                    {text: 'MySQL表对象', link: '/guide/mysql/table/'}
+                    {text: 'MySQL', link: '/guide/database/mysql/'},
+                    {text: 'SQLite', link: '/guide/database/sqlite/'}
                 ]
             },
             {
