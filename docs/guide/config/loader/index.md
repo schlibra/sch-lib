@@ -73,12 +73,12 @@ config = Config.load_xml()
 ::: tip 获取键值
 `get(key: str)`
 :::
-获取键值，支持使用`.`符号进行层级访问。
+获取键值，支持使用`.`符号进行层级访问，可以添加默认值，在未特殊定义时值为`None`。
 ```python
 from sch.config import Config
 
 config = Config.load_json()
-config.get('mysql.host')
+config.get('mysql.host',None)
 ```
 ::: details 输出内容
 `localhost`
