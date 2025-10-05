@@ -77,14 +77,18 @@ class Config:
                     _config[_item.get('key')][_subitem.get('key')] = _subitem.text
         self.data = _config
         return self
-    def get(self, key):
+    def get(self, key, default=None):
         """
         获取配置值
         :param key: 配置键值，可以使用"."分割多级键值
+        :param default: 默认值
         :return: 返回配置值
+
         """
         _data = self.config
         for _key in key.split('.'):
             _data = _data.get(_key, {})
         self.logger.info(f'Getting config value for key: {key} = {password_hide(str(_data))}')
-        return _data
+        return _data if _data else default
+    def __getitem__(self, item):
+        return self.get(item)

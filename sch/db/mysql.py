@@ -17,8 +17,13 @@ class MySQL(Database):
             self.logger.error('sch-lib[db] is required for MySQL support')
             exit(1)
         self.logger.info("Initializing MySQL...")
+        _user = config.get('mysql.user', 'root')
+        _pass = config.get('mysql.pass', '123456')
+        _host = config.get('mysql.host', 'localhost')
+        _port = config.get('mysql.port', 3306)
+        _name = config.get('mysql.name', 'root')
         self.engine = create_engine(
-            f"mysql+pymysql://{config.get('mysql.user')}:{config.get('mysql.pass')}@{config.get('mysql.host')}:{config.get('mysql.port')}/{config.get('mysql.name')}?charset=utf8mb4",
+            f"mysql+pymysql://{_user}:{_pass}@{_host}:{_port}/{_name}?charset=utf8mb4",
             echo=echo
         )
         self.connection = self.engine.connect()
