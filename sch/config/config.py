@@ -90,3 +90,5 @@ class Config:
             _data = _data.get(_key, {})
         self.logger.info(f'Getting config value for key: {key} = {password_hide(str(_data))}')
         return _data if _data else default
+    def __getitem__(self, item):
+        return self.get(item)
