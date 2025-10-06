@@ -2,6 +2,7 @@ import configparser
 import json
 import yaml
 import toml
+from Crypto.Cipher import AES
 from xml.etree import ElementTree
 from ..logger import Logger
 from ..util.password import password_hide
@@ -21,14 +22,20 @@ class Config:
         """
         self.logger = Logger('Config')
     @staticmethod
-    def load_json(file_path='config/config.json'):
+    def load_json(file_path='config/config.json', password=None):
         """
         加载JSON配置文件
         :param file_path: JSON配置文件路径
+        :param password: 密码
         """
         self = Config()
         self.logger.info(f'Loading config from {file_path}')
-        self.config = json.load(open(file_path, 'r', encoding='utf-8'))
+        if password:
+            _data = open(file_path, 'rb').read()
+            _data = AES.new(password.encode('utf8'), AES.MODE_ECB).decrypt(_data)
+            self.config = json.loads(_data)
+        else:
+            self.config = json.load(open(file_path, 'r', encoding='utf-8'))
         return self
     @staticmethod
     def load_yaml(file_path='config/config.yaml'):

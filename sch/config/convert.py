@@ -1,6 +1,7 @@
 import json
 import yaml
 import toml
+from Crypto.Cipher import AES
 from xml.etree import ElementTree
 from pprint import pprint
 from ..logger.logger import Logger
@@ -17,12 +18,20 @@ class ConfigConverter:
         self.logger.info(f'Loading JSON config file: {file_path}')
         self.data = json.load(open(file_path, 'r', encoding='utf-8'))
         return self
-    def save_json(self, file_path='config/config.json', pretty=True):
+    def save_json(self, file_path='config/config.json', password=None, pretty=True):
         self.logger.info(f'Saving JSON config file: {file_path}')
-        if pretty:
-            json.dump(self.data, open(file_path, 'w', encoding='utf-8'), indent=4, ensure_ascii=False)
+        if password:
+            _data = json.dumps(self.data)
+            length = len(_data)
+            _data += ' ' * (16 - length % 16)
+            _data = AES.new(password.encode('utf-8'), AES.MODE_ECB).encrypt(_data.encode('utf-8'))
+            with open(file_path, 'wb') as f:
+                f.write(_data)
         else:
-            json.dump(self.data, open(file_path, 'w', encoding='utf-8'))
+            if pretty:
+                json.dump(self.data, open(file_path, 'w', encoding='utf-8'), indent=4, ensure_ascii=False)
+            else:
+                json.dump(self.data, open(file_path, 'w', encoding='utf-8'))
     @staticmethod
     def load_yaml(file_path='config/config.yaml'):
         self = ConfigConverter()
@@ -98,3 +107,5 @@ class ConfigConverter:
     def load_data(self, data: dict):
         self.logger.info('Loading data:')
         self.data = data
+    def set(self, key, value):
+        self.data[key] = value
