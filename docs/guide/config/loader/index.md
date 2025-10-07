@@ -78,7 +78,7 @@ config = Config.load_xml()
 from sch.config import Config
 
 config = Config.load_json()
-config.get('mysql.host',None)
+config.get('mysql.host','localhost')
 ```
 ::: details 输出内容
 `localhost`
