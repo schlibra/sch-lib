@@ -1,11 +1,14 @@
 import configparser
 import json
+from io import BytesIO
+
 import yaml
 import toml
 from Crypto.Cipher import AES
 from xml.etree import ElementTree
 from ..logger import Logger
 from ..util.password import password_hide
+
 
 class Config:
     """
@@ -16,11 +19,13 @@ class Config:
     """
     config = {}
     logger = None
+
     def __init__(self):
         """
         初始化日志对象
         """
         self.logger = Logger('Config')
+
     @staticmethod
     def load_json(file_path='config/config.json', password=None):
         """
@@ -30,60 +35,47 @@ class Config:
         """
         self = Config()
         self.logger.info(f'Loading config from {file_path}')
+        with open(file_path, 'rb') as f:
+            _data = f.read()
         if password:
-            _data = open(file_path, 'rb').read()
             _data = AES.new(password.encode('utf8'), AES.MODE_ECB).decrypt(_data)
-            self.config = json.loads(_data)
         else:
-            self.config = json.load(open(file_path, 'r', encoding='utf-8'))
+            _data = json.loads(_data)
+        self.config = json.loads(_data)
         return self
+
     @staticmethod
-    def load_yaml(file_path='config/config.yaml'):
+    def load_yaml(file_path='config/config.yaml', password=None):
         """
         加载YAML配置文件
         :param file_path: YAML配置文件路径
+        :param password: 密码
         """
         self = Config()
         self.logger.info(f'Loading YAML config file: {file_path}')
-        self.config = yaml.load(open(file_path, 'r', encoding='utf-8'), Loader=yaml.FullLoader)
+        with open(file_path, 'rb') as f:
+            _data = f.read()
+        if password:
+            _data = AES.new(password.encode('utf8'), AES.MODE_ECB).decrypt(_data)
+        self.config = yaml.load(_data, Loader=yaml.FullLoader)
         return self
+
     @staticmethod
-    def load_toml(file_path='config/config.toml'):
+    def load_toml(file_path='config/config.toml', password=None):
         """
         加载TOML配置文件
         :param file_path: TOML配置文件路径
+        :param password: 密码
         """
         self = Config()
         self.logger.info(f'Loading TOML config file: {file_path}')
-        self.config = toml.load(open(file_path, 'r', encoding='utf-8'))
+        with open(file_path, 'rb') as f:
+            _data = f.read()
+        if password:
+            _data = AES.new(password.encode('utf8'), AES.MODE_ECB).decrypt(_data)
+        self.config = toml.loads(_data.decode('utf-8'))
         return self
-    @staticmethod
-    def load_ini(file_path='config/config.ini'):
-        """
-        加载INI配置文件
-        :param file_path: INI配置文件路径
-        """
-        self = Config()
-        self.logger.info(f'Loading INI config file: {file_path}')
-        config = configparser.ConfigParser()
-        config.read(file_path)
-        self.config = {s: dict(config.items(s)) for s in config.sections()}
-        return self
-    @staticmethod
-    def load_xml(file_path='config/config.xml'):
-        self = Config()
-        self.logger.info(f'Loading XML config file: {file_path}')
-        _tree = ElementTree.parse(file_path)
-        _config = {}
-        for _item in _tree.getroot():
-            if _text := _item.text.strip():
-                _config[_item.get('key')] = _text
-            else:
-                _config[_item.get('key')] = {}
-                for _subitem in _item:
-                    _config[_item.get('key')][_subitem.get('key')] = _subitem.text
-        self.data = _config
-        return self
+
     def get(self, key, default=None):
         """
         获取配置值
@@ -97,5 +89,6 @@ class Config:
             _data = _data.get(_key, {})
         self.logger.info(f'Getting config value for key: {key} = {password_hide(str(_data))}')
         return _data if _data else default
+
     def __getitem__(self, item):
         return self.get(item)
