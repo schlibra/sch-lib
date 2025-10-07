@@ -20,3 +20,4 @@ from .util import (
     get_mac_info,
     IP
 )
+from .compress import Gzip, Bzip, Lzma
