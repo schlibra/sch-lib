@@ -11,7 +11,7 @@ class Lzma(Compress):
 
     @staticmethod
     def decompress_text(text: str) -> str:
-        return base64.b64decode(lzma.decompress(text.encode('utf-8'))).decode('utf-8')
+        return lzma.decompress(base64.b64decode(text.encode('utf-8'))).decode('utf-8')
 
     @staticmethod
     def compress_file(input_file, output_file):

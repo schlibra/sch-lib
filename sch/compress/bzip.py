@@ -9,7 +9,7 @@ class Bzip(Compress):
 
     @staticmethod
     def decompress_text(text: str) -> str:
-        return base64.b64decode(bz2.decompress(text.encode('utf-8'))).decode('utf-8')
+        return bz2.decompress(base64.b64decode(text.encode('utf-8'))).decode('utf-8')
 
     @staticmethod
     def compress_file(input_file: str, output_file: str) -> None:

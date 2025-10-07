@@ -27,6 +27,12 @@ class Config:
         self.logger = Logger('Config')
 
     @staticmethod
+    def load_dict(config_dict: dict):
+        self = Config()
+        self.config = config_dict
+        return self
+
+    @staticmethod
     def load_json(file_path='config/config.json', password=None):
         """
         加载JSON配置文件

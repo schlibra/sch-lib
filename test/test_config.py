@@ -1,11 +1,10 @@
 import os
 import unittest
-from sch import ConfigConverter, LoggerConfig, Config
+from sch import ConfigConverter, Config
 
 
-class ConfigTest(unittest.TestCase):
+class TestConfig(unittest.TestCase):
     def test_create_config(self):
-        LoggerConfig.set_enable(False)
         converter = ConfigConverter()
         key = 'test' * 4
         self.assertIsInstance(converter, ConfigConverter)
@@ -21,7 +20,6 @@ class ConfigTest(unittest.TestCase):
         self.assertTrue(os.path.exists('test_config/config.toml'))
 
     def test_read_config(self):
-        LoggerConfig.set_enable(False)
         key = 'test' * 4
         config = Config.load_json('test_config/config.json', key)
         self.assertIsInstance(config, Config)
@@ -42,6 +40,3 @@ class ConfigTest(unittest.TestCase):
         self.assertFalse(os.path.exists('test_config/config.toml'))
         os.rmdir('test_config')
         self.assertFalse(os.path.exists('test_config'))
-
-if __name__ == '__main__':
-    unittest.main()
