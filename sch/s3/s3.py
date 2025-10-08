@@ -25,7 +25,7 @@ class S3:
 
     def list_buckets(self):
         self.logger.info('Listing S3 buckets')
-        return self.client.buckets.all()
+        return [bucket.name for bucket in self.client.buckets.all()]
 
     def set_bucket(self, bucket_name: str):
         self.logger.info(f'Setting S3 bucket to {bucket_name}')
@@ -43,11 +43,9 @@ class S3:
 
     def write_file(self, key: str, data: Union[str, bytes]):
         self.logger.info(f'Writing file {key} to S3')
-        print(f'Writing {key}...')
         _object = self.bucket.Object(key)
         _object.put(Body=data)
         self.logger.info(f'File {key} written to S3')
-        print('Write complete')
 
     def delete_file(self, key: str):
         self.logger.info(f'Deleting file {key} from S3')

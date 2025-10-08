@@ -27,6 +27,10 @@ if __name__ == '__main__':
         TestLzma('test_decompress_text'),
         TestLzma('test_compress_file'),
         TestLzma('test_decompress_file'),
+        TestS3('test_list_buckets'),
+        TestS3('test_set_bucket'),
+        TestS3('test_write_file'),
+        TestS3('test_delete_file'),
     ])
     runner = unittest.TextTestRunner(verbosity=2)
     runner.run(suite)
