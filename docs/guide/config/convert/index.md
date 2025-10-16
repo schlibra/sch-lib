@@ -126,3 +126,23 @@ converter.save_ini()
 ```python {4}
 converter.save_xml()
 ```
+## 数据操作
+### 获取键值
+::: tip 获取键值
+`get(key: str)`
+:::
+获取键值，支持使用`.`符号进行层级访问。
+```python
+converter.get('mysql.host')
+```
+::: details 输出内容
+`localhost`
+:::
+### 设置键值
+::: tip 设置键值
+`set(key: str, value)`
+:::
+设置键值
+```python
+converter.set('mysql.host', '127.0.0.1')
+```

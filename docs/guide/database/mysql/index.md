@@ -151,3 +151,8 @@ UserList = MySQL.table(
 `drop_table(table: Table)`
 :::
 删除表，`Table`对象参考[MySQL表](table)。
+## 获取表
+::: tip 获取表
+`get_tables()`
+:::
+获取所有表名。

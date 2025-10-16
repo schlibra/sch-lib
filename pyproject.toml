@@ -1,6 +1,6 @@
 [project]
 name = "sch-lib"
-version = "1.0.7"
+version = "1.0.8"
 requires-python = ">=3.9"
 dependencies = [
     "pycryptodome>=3.23.0",

@@ -113,6 +113,14 @@ export default defineConfig({
                 ]
             },
             {
+                text: '压缩解压',
+                items: [
+                    {text: 'Gzip压缩', link: '/guide/compress/gzip/'},
+                    {text: 'Bzip压缩', link: '/guide/compress/bzip/'},
+                    {text: 'Lzma压缩', link: '/guide/compress/lzma/'},
+                ]
+            },
+            {
                 text: '对象存储',
                 items: [
                     {text: 'S3', link: '/guide/s3/'}
