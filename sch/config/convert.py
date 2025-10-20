@@ -1,7 +1,9 @@
+import base64
+import hashlib
 import json
 import yaml
 import toml
-from Crypto.Cipher import AES
+from cryptography.fernet import Fernet
 from xml.etree import ElementTree
 from pprint import pprint
 from ..logger.logger import Logger
@@ -19,16 +21,19 @@ class ConfigConverter:
         self.logger.info(f'Loading JSON config file: {file_path}')
         _data = open(file_path, 'rb').read()
         if password:
-            _data = AES.new(password.encode('utf-8'), AES.MODE_ECB).decrypt(_data)
-        self.data = json.loads(_data.decode('utf-8'))
+            _hash = hashlib.sha256(password.encode('utf-8')).digest()
+            _key = base64.urlsafe_b64encode(_hash)
+            _cipher = Fernet(_key)
+            _data = _cipher.decrypt(_data)
+        self.data = json.loads(_data.decode())
         return self
     def save_json(self, file_path='config/config.json', password=None, pretty=True):
         self.logger.info(f'Saving JSON config file: {file_path}')
         if password:
-            _data = json.dumps(self.data)
-            length = len(_data)
-            _data += ' ' * (16 - length % 16)
-            _data = AES.new(password.encode('utf-8'), AES.MODE_ECB).encrypt(_data.encode('utf-8'))
+            _hash = hashlib.sha256(password.encode('utf-8')).digest()
+            _key = base64.urlsafe_b64encode(_hash)
+            _cipher = Fernet(_key)
+            _data = _cipher.encrypt(json.dumps(self.data).encode())
             with open(file_path, 'wb') as f:
                 f.write(_data)
         else:
@@ -42,16 +47,19 @@ class ConfigConverter:
         self.logger.info(f'Loading YAML config file: {file_path}')
         _data = open(file_path, 'rb').read()
         if password:
-            _data = AES.new(password.encode('utf-8'), AES.MODE_ECB).decrypt(_data)
+            _hash = hashlib.sha256(password.encode('utf-8')).digest()
+            _key = base64.urlsafe_b64encode(_hash)
+            _cipher = Fernet(_key)
+            _data = _cipher.decrypt(_data)
         self.data = yaml.load(_data.decode('utf-8'), Loader=yaml.FullLoader)
         return self
     def save_yaml(self, file_path='config/config.yaml', password=None):
         self.logger.info(f'Saving YAML config file: {file_path}')
         if password:
-            _data = yaml.dump(self.data, default_flow_style=False, allow_unicode=True)
-            length = len(_data)
-            _data += ' ' * (16 - length % 16)
-            _data = AES.new(password.encode('utf-8'), AES.MODE_ECB).encrypt(_data.encode('utf-8'))
+            _hash = hashlib.sha256(password.encode('utf-8')).digest()
+            _key = base64.urlsafe_b64encode(_hash)
+            _cipher = Fernet(_key)
+            _data = _cipher.encrypt(yaml.dump(self.data).encode())
             with open(file_path, 'wb') as f:
                 f.write(_data)
         else:
@@ -62,16 +70,19 @@ class ConfigConverter:
         self.logger.info(f'Loading TOML config file: {file_path}')
         _data = open(file_path, 'rb').read()
         if password:
-            _data = AES.new(password.encode('utf-8'), AES.MODE_ECB).decrypt(_data)
+            _hash = hashlib.sha256(password.encode('utf-8')).digest()
+            _key = base64.urlsafe_b64encode(_hash)
+            _cipher = Fernet(_key)
+            _data = _cipher.decrypt(_data)
         self.data = toml.loads(_data.decode('utf-8'))
         return self
     def save_toml(self, file_path='config/config.toml', password=None):
         self.logger.info(f'Saving TOML config file: {file_path}')
         if password:
-            _data = toml.dumps(self.data)
-            length = len(_data)
-            _data += ' ' * (16 - length % 16)
-            _data = AES.new(password.encode('utf-8'), AES.MODE_ECB).encrypt(_data.encode('utf-8'))
+            _hash = hashlib.sha256(password.encode('utf-8')).digest()
+            _key = base64.urlsafe_b64encode(_hash)
+            _cipher = Fernet(_key)
+            _data = _cipher.encrypt(toml.dumps(self.data).encode())
             with open(file_path, 'wb') as f:
                 f.write(_data)
         else:

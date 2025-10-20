@@ -1,11 +1,10 @@
-import configparser
+import base64
+import hashlib
 import json
-from io import BytesIO
-
+import os
 import yaml
 import toml
-from Crypto.Cipher import AES
-from xml.etree import ElementTree
+from cryptography.fernet import Fernet
 from ..logger import Logger
 from ..util.password import password_hide
 
@@ -43,12 +42,20 @@ class Config:
         self.logger.info(f'Loading config from {file_path}')
         with open(file_path, 'rb') as f:
             _data = f.read()
-        if password:
-            _data = AES.new(password.encode('utf8'), AES.MODE_ECB).decrypt(_data)
-        else:
+        try:
             _data = json.loads(_data)
-        self.config = json.loads(_data)
-        return self
+        except json.JSONDecodeError as e:
+            if not password:
+                password = os.getenv('CONFIG_PASSWORD')
+            if password:
+                _hash = hashlib.sha256(password.encode('utf-8')).digest()
+                _key = base64.urlsafe_b64encode(_hash)
+                _cipher = Fernet(_key)
+                _data = _cipher.decrypt(_data).decode('utf-8')
+                _data = json.loads(_data)
+        finally:
+            self.config = _data
+            return self
 
     @staticmethod
     def load_yaml(file_path='config/config.yaml', password=None):
@@ -61,10 +68,19 @@ class Config:
         self.logger.info(f'Loading YAML config file: {file_path}')
         with open(file_path, 'rb') as f:
             _data = f.read()
-        if password:
-            _data = AES.new(password.encode('utf8'), AES.MODE_ECB).decrypt(_data)
-        self.config = yaml.load(_data, Loader=yaml.FullLoader)
-        return self
+        try:
+            self.config = yaml.load(_data, Loader=yaml.FullLoader)
+        except yaml.YAMLError as e:
+            if not password:
+                password = os.getenv('CONFIG_PASSWORD')
+            if password:
+                _hash = hashlib.sha256(password.encode('utf-8')).digest()
+                _key = base64.urlsafe_b64encode(_hash)
+                _cipher = Fernet(_key)
+                _data = _cipher.decrypt(_data)
+                self.config = yaml.load(_data, Loader=yaml.FullLoader)
+        finally:
+            return self
 
     @staticmethod
     def load_toml(file_path='config/config.toml', password=None):
@@ -77,10 +93,19 @@ class Config:
         self.logger.info(f'Loading TOML config file: {file_path}')
         with open(file_path, 'rb') as f:
             _data = f.read()
-        if password:
-            _data = AES.new(password.encode('utf8'), AES.MODE_ECB).decrypt(_data)
-        self.config = toml.loads(_data.decode('utf-8'))
-        return self
+        try:
+            self.config = toml.loads(_data.decode('utf-8'))
+        except toml.TomlDecodeError as e:
+            if not password:
+                password = os.getenv('CONFIG_PASSWORD')
+            if password:
+                _hash = hashlib.sha256(password.encode('utf-8')).digest()
+                _key = base64.urlsafe_b64encode(_hash)
+                _cipher = Fernet(_key)
+                _data = _cipher.decrypt(_data)
+                self.config = toml.loads(_data.decode('utf-8'))
+        finally:
+            return self
 
     def get(self, key, default=None):
         """

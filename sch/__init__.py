@@ -21,3 +21,4 @@ from .util import (
     IP
 )
 from .compress import Gzip, Bzip, Lzma
+from .i18n import I18n, I18nBuilder

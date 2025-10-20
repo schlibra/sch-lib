@@ -15,3 +15,5 @@ node_modules/
 /_*.py
 **/*.db
 /test.*
+/i18n
+/*output*

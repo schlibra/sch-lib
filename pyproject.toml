@@ -1,9 +1,9 @@
 [project]
 name = "sch-lib"
-version = "1.0.8"
+version = "1.0.9"
 requires-python = ">=3.9"
 dependencies = [
-    "pycryptodome>=3.23.0",
+    "cryptography>=46.0.3",
     "pyyaml>=6.0.2",
     "toml>=0.10.2",
 ]
@@ -50,17 +50,7 @@ all = [
 
 [tool.setuptools]
 packages = [
-    "sch",
-    "sch.avatar",
-    "sch.config",
-    "sch.image_api",
-    "sch.interval",
-    "sch.led_control",
-    "sch.logger",
-    "sch.db",
-    "sch.openlist",
-    "sch.util",
-    "sch.s3"
+    "sch"
 ]
 
 [project.scripts]
