@@ -1,6 +1,6 @@
 [project]
 name = "sch-lib"
-version = "1.0.9"
+version = "1.0.10"
 requires-python = ">=3.9"
 dependencies = [
     "cryptography>=46.0.3",

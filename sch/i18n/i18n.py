@@ -41,5 +41,7 @@ class I18n:
             self.logger.info(f"Language set to {self.lang}.")
         else:
             self.logger.error(f"Language file for {self.lang} not found.")
-    def __call__(self, key):
+    def __call__(self, key, *format_args):
+        return self.__lang_data.get(key, key).format(*format_args)
+    def __getitem__(self, key):
         return self.__lang_data.get(key, key)
