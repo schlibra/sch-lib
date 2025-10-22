@@ -31,11 +31,13 @@ class S3:
         self.logger.info(f'Setting S3 bucket to {bucket_name}')
         self.bucket = self.client.Bucket(bucket_name)
 
-    def read_file(self, key: str):
+    def read_file(self, key: str, decode: bool = True):
         try:
             self.logger.info(f'Reading file {key} from S3')
             _object = self.bucket.Object(key)
-            _data = _object.get()['Body'].read().decode('utf-8')
+            _data = _object.get()['Body'].read()
+            if decode:
+                _data = _data.decode('utf-8')
             return _data
         except Exception as e:
             self.logger.error(f'Error reading file {key}: {e}')
