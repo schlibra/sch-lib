@@ -1,20 +1,20 @@
 import datetime
+from typing import TypeVar, Tuple, Any
 
 from .database import Database
-from typing import TypeVar, Tuple, Any
-from sch.logger import Logger
+from ..logger import Logger
 
-class MySQL(Database):
+class PgSQL(Database):
     _TP = TypeVar("_TP", bound=Tuple[Any, ...])
     engine = None
     connection = None
     logger: Logger
     def __init__(self, config, echo=False):
-        self.logger = Logger("MySQL")
+        self.logger = Logger('PostgreSQL')
         try:
             from sqlalchemy import create_engine, Engine, Connection
         except (ModuleNotFoundError, ImportError):
-            self.logger.error('sch-lib[db] is required for MySQL support')
+            self.logger.error('sch-lib[db] is required for PostgreSQL support')
             exit(1)
         self.logger.info("Initializing MySQL...")
         _user = config.get('mysql.user', 'root')
@@ -23,8 +23,7 @@ class MySQL(Database):
         _port = config.get('mysql.port', 3306)
         _name = config.get('mysql.name', 'root')
         self.engine = create_engine(
-            f"mysql+pymysql://{_user}:{_pass}@{_host}:{_port}/{_name}?charset=utf8mb4",
-            echo=echo
+            f"postgresql+pg8000://{_user}:{_pass}@{_host}:{_port}/{_name}"
         )
         self.connection = self.engine.connect()
 
@@ -34,7 +33,7 @@ class MySQL(Database):
             from sqlalchemy import Table, Column, Integer, String, Boolean, Float, DateTime, Date, MetaData
             from sqlalchemy.schema import SchemaItem
         except (ModuleNotFoundError, ImportError):
-            logger = Logger("MySQL")
+            logger = Logger("PostgreSQL")
             logger.error('sch-lib[db] is required for MySQL support')
             exit(1)
         args = []
@@ -72,17 +71,11 @@ class MySQL(Database):
                     args.append(Column(_name, get_column_type(_type, _ext)))
         return Table(name, MetaData(), *args, mysql_engine='InnoDB', mysql_charset='utf8mb4')
 
-    def get_tables(self):
-        self.logger.info("Getting MySQL tables...")
-        result = self.fetchall("SHOW TABLES")
-        return [row[0] for row in result]
 
-    def get_version(self) -> str:
-        self.logger.info("Getting MySQL version...")
-        result = self.fetchone("SELECT VERSION()")
+    def get_version(self):
+        self.logger.info("Getting PostgreSQL version...")
+        result = self.fetchall("SELECT VERSION()")
         return result[0]
 
-
-
-
-
+    def get_tables(self):
+        pass
