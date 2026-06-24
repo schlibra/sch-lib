@@ -1,6 +1,6 @@
 [project]
 name = "sch-lib"
-version = "1.1.1"
+version = "1.1.2"
 requires-python = ">=3.9"
 description  = "轻松使用Python进行开发"
 dependencies = [

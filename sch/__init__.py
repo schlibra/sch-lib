@@ -18,7 +18,9 @@ from .util import (
     qrcode_print,
     qrcode_image,
     get_mac_info,
-    IP
+    IP,
+    urlencode,
+    urldecode
 )
 from .compress import Gzip, Bzip, Lzma
 from .i18n import I18n, I18nBuilder
